@@ -38,6 +38,7 @@ const Keyboard = ({ theme, screenNumber }) => {
         }else if(key==="RESET" || key==="Delete"){
             setFirstNum(0)
             setSecondNum(0)
+            setBackupSecondNum(0)
             setOperator(null)
          
         }else if(key==="="){
