@@ -1,0 +1,46 @@
+:root {
+  --dot-size: 18px;
+  --toogle-height: 25px;
+  --main-width: 460px;
+  --main-mobile-width: 370px;
+  --screen-height: 100px;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.calc-header {
+  width: var(--main-width);
+}
+.calc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calc-screen {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: var(--main-width);
+  height: var(--screen-height);
+  border-radius: 10px;
+}
+.screen-num {
+  font-size: 50px;
+  font-weight: 700;
+  padding: 0.5em;
+}
+
+@media (max-width: 500px) {
+  .calc-screen,
+  .calc-header,
+  .keyboard-container {
+    width: var(--main-mobile-width);
+  }
+}
