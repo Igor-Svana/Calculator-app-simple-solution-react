@@ -7,17 +7,23 @@ const Keyboard = ({ theme, screenNumber }) => {
     const [firstNum, setFirstNum] = useState(0)
     const [secondNum, setSecondNum] = useState(0)
     const [operator, setOperator] = useState(null)
+    const [backupOperator, setBackupOperator] = useState(null)
     const [backupSecondNum, setBackupSecondNum] = useState(0)
 
-    const mathFunction = () => {
-        let mathFunc = `${parseFloat(firstNum !==null ? firstNum : "0")} ${operator!== null ? operator : "+"} ${parseFloat(secondNum !==0 ? secondNum : backupSecondNum)}`
+    const mathFunction = (op) => {
+        let mathFunc = `${parseFloat(firstNum !==null ? firstNum : "0")} ${operator!== null ? operator : backupOperator} ${parseFloat((secondNum !==0 && secondNum !=null) ? secondNum : backupSecondNum)}`
             setFirstNum(eval(mathFunc).toString().slice(0,12))
-            if(secondNum!==0)setBackupSecondNum(secondNum)            
+            if(op==null){
+              if(secondNum!=null && secondNum!=0)setBackupSecondNum(secondNum)
+            }else if( op !=null) {
+              setBackupSecondNum(eval(mathFunc).toString().slice(0,12))
+            }
+            if(operator != null)setBackupOperator(operator)
             setSecondNum(0)
     }
 
     const keyFunction = (event) => {
-      if(keys.includes(parseFloat(event.key)) || keys.includes(event.key) || event.key==="Enter" || "Backspace" || "Delete" )mathHandler(event.key)
+      if(keys.includes(parseFloat(event.key)) || keys.includes(event.key) || event.key==="Enter" || event.key==="Backspace" || event.key==="Delete" ) mathHandler(event.key)
     }
 
     useEffect(() => {
@@ -31,8 +37,17 @@ const Keyboard = ({ theme, screenNumber }) => {
       if(key==="Enter")key="=";
         if(!isNaN(key) || key==="."){
             if(operator===null){
+              if(secondNum===null){
+                 setFirstNum(key), setSecondNum("0")
+                return;
+                }
               setFirstNum(firstNum+key)
             }else{
+            
+              if(secondNum === null){
+                 setSecondNum(key)
+                 return
+                }
               setSecondNum(secondNum+key)
             }
         }else if(key==="RESET" || key==="Delete"){
@@ -40,9 +55,13 @@ const Keyboard = ({ theme, screenNumber }) => {
             setSecondNum(0)
             setBackupSecondNum(0)
             setOperator(null)
+            setBackupOperator(null)
          
         }else if(key==="="){
-            mathFunction()
+            mathFunction(null)
+            setOperator(null)
+            setSecondNum(null)
+            
         }else if(key==="DEL" || key==="Backspace") {
             if(secondNum!=0){
                 if(secondNum.length ===1){
@@ -59,7 +78,8 @@ const Keyboard = ({ theme, screenNumber }) => {
             }
         }
         else{
-            if(operator===key)mathFunction()
+          if(operator!=backupOperator)setBackupSecondNum(firstNum)
+            if(firstNum != 0 && secondNum != 0 && secondNum !=null && operator != null )mathFunction('operator')
             setOperator(key)
         }
     }
