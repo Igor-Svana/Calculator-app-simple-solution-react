@@ -96,6 +96,7 @@ const Keyboard = ({ theme, screenNumber }) => {
         {keys.map((key) => {
           return (
             <button
+            key={Math.random()}
               onClick={mathHandler.bind(this, key)}
               className={"key-btn" + (key === "RESET" ? " reset" : "") + (key === "=" ? " equals" : "")}
               style={{boxShadow: ((key === "DEL" || key === "RESET") && `0px 5px ${theme.dark_key_shadow}`) || (key === "=" && `0px 5px ${theme.toogle_shadow_color}`) || ((key !== "DEL" || key !== "RESET" || key !== "=") && `0px 5px ${theme.key_shadow}`),
